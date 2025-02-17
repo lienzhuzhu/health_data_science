@@ -27,6 +27,8 @@ mydata <- tibble(
 
 gbd_short <- read_csv("data/global_burden_disease_cause-year.csv")
 
+gbd_short
+
 
 mydata
 
