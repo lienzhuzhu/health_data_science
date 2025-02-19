@@ -253,3 +253,11 @@ gapdata |>
                color    = year)) +
     geom_point(shape = 15) +
     scale_color_distiller(direction = 1)
+
+gapdata2007 |> 
+    group_by(continent) |> 
+    mutate(country_number = seq_along(country)) |> 
+    ggplot(aes(x = continent)) +
+    geom_bar(aes(color = continent), fill = NA, show.legend = FALSE) +
+    geom_text(aes(y = country_number, label = country), vjust = 1) +
+    geom_label(aes(label = continent), y = -1)
