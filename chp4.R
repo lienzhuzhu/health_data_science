@@ -165,10 +165,78 @@ gapdata2007 |>
     filter(continent == "Europe") |> 
     ggplot(aes(x = fct_reorder(country, lifeExp), y = lifeExp)) +
     geom_col(color = "deepskyblue", fill = NA) +
-    coord_flip()
+    coord_flip() +
+    theme_classic()
 
 
 # 4.7 Histograms ========
 gapdata2007 |> 
     ggplot(aes(x = lifeExp)) +
     geom_histogram(binwidth = 10)
+
+# 4.8 Box Plots ========
+gapdata2007 |> 
+    ggplot(aes(x = continent, y = lifeExp, color = continent)) +
+    geom_boxplot(show.legend = FALSE) +
+    scale_color_brewer(palette = "Paired")
+
+# 4.9 Multiple geoms ======== 
+# Experiment
+gapdata2007 |> 
+    group_by(continent) |> 
+    summarize(lifeExp = mean(lifeExp)) |> 
+    ggplot(aes(x = continent, y = lifeExp)) +
+    geom_col()
+
+gapdata2007 |> 
+    ggplot(aes(x = continent, y = lifeExp)) +
+    geom_boxplot() +
+    geom_point()
+
+gapdata2007 |> 
+    ggplot(aes(x = continent, y = lifeExp)) +
+    geom_boxplot() +
+    geom_jitter()
+
+gapdata2007 |> 
+    ggplot(aes(x = continent, y = lifeExp, color = continent)) +
+    geom_boxplot() +
+    geom_jitter() +
+    theme(legend.position = "none")
+
+gapdata2007 |> 
+    ggplot(aes(x = continent, y = lifeExp, color = continent)) +
+    geom_boxplot(show.legend = FALSE) +
+    geom_jitter(show.legend = FALSE, position = position_jitter(seed = 1))
+
+gapdata2007 |> 
+    ggplot(aes(x = continent, y = lifeExp)) +
+    geom_boxplot() +
+    geom_jitter(aes(color = continent), position = position_jitter(seed = 1))
+
+label_data <- gapdata2007 |> 
+    group_by(continent) |> 
+    filter(lifeExp == max(lifeExp)) |> 
+    select(country, continent, lifeExp)
+
+label_data
+
+gapdata2007 |> 
+    ggplot(aes(x = continent, y = lifeExp)) +
+    geom_boxplot() +
+    geom_jitter(aes(color = continent)) +
+    geom_label(data = label_data, aes(label = country))
+
+# Experiment: label = lifeExp
+gapdata2007 |> 
+    ggplot(aes(x = continent, y = lifeExp)) +
+    geom_boxplot() +
+    geom_jitter(aes(color = continent)) +
+    geom_label(data = label_data, aes(label = lifeExp))
+
+# Experiment: geom_text instead of geom_label
+gapdata2007 |> 
+    ggplot(aes(x = continent, y = lifeExp)) +
+    geom_boxplot() +
+    geom_jitter(aes(color = continent)) +
+    geom_text(data = label_data, aes(label = country))
