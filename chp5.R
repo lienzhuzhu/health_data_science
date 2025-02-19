@@ -30,6 +30,7 @@ p4
 library(patchwork)
 p1 + p2 + p3 + p4 + plot_annotation(tag_levels = "1", tag_prefix = "p")
 
+# Exercise 5.2.4
 p5 <- p0 +
     coord_cartesian(ylim = c(70, 85), 
                     xlim = c(20000, 40000))
@@ -42,6 +43,45 @@ p6 <- p0 +
 # It looks like the points displayed didn't change, but the points included
 #   in the interpolation for geom_smooth did change.
 #   This removes excluded points from geom_smooth calculation.
-p6
+#p6
 
-p5 + labs(tag = "p5") + p6 + labs(tag = "p6")
+#p5 + labs(tag = "p5") + p6 + labs(tag = "p6")
+
+p13 <- p0 +
+    labs(x = "Gross domestic product per capita",
+         y = "Life expectancy",
+         title = "Health and economics",
+         subtitle = "Gapminder dataset, 2007",
+         caption = Sys.Date(),
+         color = "Continents",
+         tag = "p13")
+
+p13
+
+
+fit_glance <- tibble(r.squared = 0.7693465)
+
+fit_glance
+
+plot_r2 <- paste0(
+    "R^2 == ",
+    fit_glance$r.squared |> round(2)
+)
+
+p17 <- p0 +
+    annotate("text",
+             x = 25000,
+             y = 50,
+             label = plot_r2, parse = TRUE, # parse the text variable as math
+             hjust = 0)
+
+p17 + labs(tag = "p17")
+
+p20 <- p0 +
+    theme(
+        legend.position = "inside",
+        legend.position.inside = c(1, 0),
+        legend.justification = c(1,0)
+    )
+
+p20
