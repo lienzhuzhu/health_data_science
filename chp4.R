@@ -168,4 +168,7 @@ gapdata2007 |>
     coord_flip()
 
 
-# 4.7 Histograms ======== 
+# 4.7 Histograms ========
+gapdata2007 |> 
+    ggplot(aes(x = lifeExp)) +
+    geom_histogram(binwidth = 10)
