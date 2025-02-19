@@ -163,6 +163,8 @@ gapdata2007 |>
 # Exercise 4.6.5 ========
 gapdata2007 |> 
     filter(continent == "Europe") |> 
+    # No sorting function needed in fct_reorder because only one lifeExp
+    #   value and only one year and one country
     ggplot(aes(x = fct_reorder(country, lifeExp), y = lifeExp)) +
     geom_col(color = "deepskyblue", fill = NA) +
     coord_flip() +
@@ -240,3 +242,14 @@ gapdata2007 |>
     geom_boxplot() +
     geom_jitter(aes(color = continent)) +
     geom_text(data = label_data, aes(label = country))
+
+gapdata |> 
+    filter(continent == "Europe") |> 
+    # fct_reorder needs a sorting function specified to get the desired effect
+    #   otherwise it defaults to median and will order countries by
+    #   greatest median
+    ggplot(aes(y        = fct_reorder(country, lifeExp, .fun = max),
+               x        = lifeExp,
+               color    = year)) +
+    geom_point(shape = 15) +
+    scale_color_distiller(direction = 1)
