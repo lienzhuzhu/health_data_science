@@ -166,3 +166,6 @@ gapdata2007 |>
     ggplot(aes(x = fct_reorder(country, lifeExp), y = lifeExp)) +
     geom_col(color = "deepskyblue", fill = NA) +
     coord_flip()
+
+
+# 4.7 Histograms ======== 
