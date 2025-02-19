@@ -126,3 +126,5 @@ gapdata |>
     geom_line() +
     facet_wrap( ~ continent) +
     scale_color_brewer(palette = "Paired")
+
+# 4.6 Bar Plots ========
