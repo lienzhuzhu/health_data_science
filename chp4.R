@@ -260,4 +260,5 @@ gapdata2007 |>
     ggplot(aes(x = continent)) +
     geom_bar(aes(color = continent), fill = NA, show.legend = FALSE) +
     geom_text(aes(y = country_number, label = country), vjust = 1) +
-    geom_label(aes(label = continent), y = -1)
+    geom_label(aes(label = continent), y = -1) +
+    theme_void()
