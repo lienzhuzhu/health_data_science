@@ -128,3 +128,41 @@ gapdata |>
     scale_color_brewer(palette = "Paired")
 
 # 4.6 Bar Plots ========
+# Use a column plot when the data already has a summary for a categorical variable
+gapdata2007 |> 
+    filter(country %in% c("United Kingdom", "France", "Germany")) |> 
+    ggplot(aes(x = country, y = lifeExp)) +
+    geom_col()
+    
+gapdata2007 |> 
+    filter(country %in% c("United Kingdom", "France", "Germany")) |> 
+    ggplot(aes(x = country, y = lifeExp)) +
+    geom_col() +
+    coord_cartesian(ylim = c(79, 81))
+
+# Use a bar plot when counting rows with some value of a categorical variable
+gapdata2007 |>  # gapdata2007 has one row per country
+    count(continent)
+
+# Boring...
+gapdata2007 |> 
+    ggplot(aes(x = continent)) +
+    geom_bar()
+
+# ...so color each individual country within a continent
+gapdata2007 |> 
+    ggplot(aes(x = continent)) +
+    geom_bar(aes(color = country), fill = NA) +
+    theme(legend.position = "none")
+
+gapdata2007 |> 
+    ggplot(aes(x = "Global", fill = continent)) +
+    geom_bar()
+
+
+# Exercise 4.6.5 ========
+gapdata2007 |> 
+    filter(continent == "Europe") |> 
+    ggplot(aes(x = fct_reorder(country, lifeExp), y = lifeExp)) +
+    geom_col(color = "deepskyblue", fill = NA) +
+    coord_flip()
