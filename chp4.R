@@ -1,6 +1,7 @@
 library(tidyverse)
 library(gapminder)
 
+# 4.1 ========
 gapminder |> 
     glimpse()
 
@@ -17,6 +18,8 @@ gapdata <- gapminder
 
 gapdata
 
+
+# 4.2 ========
 # Plot 1
 gapdata2007 |> 
     ggplot(aes(x = gdpPercap, y = lifeExp))
@@ -71,3 +74,55 @@ gapdata2007 |>
     geom_point(shape = 1) +
     facet_wrap( ~ continent) +
     theme_bw()
+
+
+# 4.3 ========
+theme_set(theme_bw())
+
+
+# 4.4 Scatter Plots ========
+gapdata2007 |> 
+    ggplot(aes(x = gdpPercap/1000, y = lifeExp, size = pop)) +
+    geom_point()
+
+gapdata2007 |> 
+    ggplot(aes(x = gdpPercap/1000, y = lifeExp, size = pop)) +
+    geom_point(shape = 1, alpha = 0.5)
+
+
+# 4.5 Line Plots and Time Series ======== 
+gapdata |> 
+    filter(country == "United Kingdom") |> 
+    ggplot(aes(x = year, y = lifeExp)) +
+    geom_line()
+
+gapdata |> 
+    filter(country == "United Kingdom") |> 
+    ggplot(aes(x = year, y = lifeExp)) +
+    geom_point()
+
+# Bad, undesired behavior
+gapdata |> 
+    ggplot(aes(x = year, y = lifeExp)) +
+    geom_line()
+
+# Good, desired behavior
+gapdata |> 
+    ggplot(aes(x = year, y = lifeExp)) +
+    geom_line()
+
+# Exercise 4.5.1
+gapdata |> 
+    ggplot(aes(x = year, y = lifeExp, group = country, color = continent)) +
+    geom_line()
+
+gapdata |> 
+    ggplot(aes(x = year, y = lifeExp, group = country, color = continent)) +
+    geom_line() +
+    facet_wrap( ~ continent)
+
+gapdata |> 
+    ggplot(aes(x = year, y = lifeExp, group = country, color = continent)) +
+    geom_line() +
+    facet_wrap( ~ continent) +
+    scale_color_brewer(palette = "Paired")
