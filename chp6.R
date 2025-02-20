@@ -105,3 +105,23 @@ gapdata %>%
 # Identical to paired t test from before...
 paired_table %>% 
     t.test(.$deltaLifeExp, mu = 0, data = .)
+
+
+# 6.7 Comparing means across more than two groups ====
+# May want to compare a distribution for more than three groups
+#   such as average life expectancy in 3 continents.
+#   Use ANOVA
+
+gapdata %>% 
+    filter(year == 2007) %>% 
+    filter(continent %in% 
+               c("Americas", "Europe", "Asia")) %>% 
+    ggplot(aes(x = continent, y=lifeExp)) +
+    geom_boxplot()
+
+aov_data <- gapdata %>% 
+    filter(year == 2007) %>% 
+    filter(continent %in% c("Americas", "Europe", "Asia"))
+
+fit = aov(lifeExp ~ continent, data = aov_data) 
+summary(fit)
