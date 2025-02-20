@@ -48,6 +48,7 @@ gapdata |>
 
 
 # 6.5 Comparing means of two groups ====
+# Two sample t-test and paired t-test
 
 # Two sample t-Test
 # Let's compare Asia and Europe life expectancy in 2007
@@ -66,12 +67,12 @@ paired_data <- gapdata |>
     filter(continent == "Asia")
 paired_data
 
-paired_data |> 
-    ggplot(aes(
-        x = year,
-        y = lifeExp,
-        group = country)) +
-    geom_line()
+# paired_data |> 
+#     ggplot(aes(
+#         x = year,
+#         y = lifeExp,
+#         group = country)) +
+#     geom_line()
 
 paired_table <- paired_data |> 
     select(country, continent, year, lifeExp) |> 
@@ -89,3 +90,18 @@ paired_table |>
 
 t.test(paired_table$year_2002, paired_table$year_2007, paired = TRUE)
 t.test(paired_table$year_2002, paired_table$year_2007, paired = FALSE) # Unpaired, wrong
+
+
+# 6.6 One sample t-test ====
+library(broom)
+gapdata %>%
+    filter(year == 2007) %>%
+    group_by(continent) %>% 
+    do(
+        t.test(.$lifeExp, mu = 77, data = .) %>% 
+            tidy()
+    )
+
+# Identical to paired t test from before...
+paired_table %>% 
+    t.test(.$deltaLifeExp, mu = 0, data = .)
