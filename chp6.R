@@ -45,3 +45,11 @@ gapdata |>
     theme(legend.position = "none")
 
 # 6.5 Comparing means of two groups ====
+# Let's compare Asia and Europe life expectancy in 2007
+ttest_data <- gapminder |> 
+    filter(year == 2007) |> 
+    filter(continent %in% c("Asia", "Europe"))
+
+ttest_result <- ttest_data |> 
+    t.test(lifeExp ~ continent, data = _) # Native pipe use `_` for placeholder
+ttest_result
