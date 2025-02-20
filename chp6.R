@@ -35,7 +35,9 @@ gapdata |>
     filter(year %in% c(2002, 2007)) |>
     ggplot(aes(x = factor(year), y = lifeExp)) +
     geom_boxplot(aes(fill = continent), show.legend = FALSE) +
-    geom_jitter(aes(color = continent), alpha = 0.4, position = position_jitter(seed = 1)) +
+    geom_jitter(
+        aes(color = continent), alpha = 0.4,
+        position = position_jitter(seed = 1)) +
     facet_wrap( ~ continent, ncol = 5) +
     labs(
         x = "Year",
@@ -44,12 +46,46 @@ gapdata |>
     ) +
     theme(legend.position = "none")
 
+
 # 6.5 Comparing means of two groups ====
+
+# Two sample t-Test
 # Let's compare Asia and Europe life expectancy in 2007
-ttest_data <- gapminder |> 
+ttest_data <- gapdata |> 
     filter(year == 2007) |> 
     filter(continent %in% c("Asia", "Europe"))
 
 ttest_result <- ttest_data |> 
     t.test(lifeExp ~ continent, data = _) # Native pipe use `_` for placeholder
 ttest_result
+
+# Paired t-Test
+# Compare Asia lifeExp between 2002 and 2007
+paired_data <- gapdata |> 
+    filter(year %in% c(2002, 2007)) |> 
+    filter(continent == "Asia")
+paired_data
+
+paired_data |> 
+    ggplot(aes(
+        x = year,
+        y = lifeExp,
+        group = country)) +
+    geom_line()
+
+paired_table <- paired_data |> 
+    select(country, continent, year, lifeExp) |> 
+    pivot_wider(
+        names_from = year,
+        values_from = lifeExp,
+        names_prefix = "year_"
+    ) |> 
+    mutate(deltaLifeExp = year_2007 - year_2002)
+paired_table
+
+# Average difference in life expectancy
+paired_table |> 
+    summarize(mean(deltaLifeExp))
+
+t.test(paired_table$year_2002, paired_table$year_2007, paired = TRUE)
+t.test(paired_table$year_2002, paired_table$year_2007, paired = FALSE) # Unpaired, wrong
