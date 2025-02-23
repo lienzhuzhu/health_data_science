@@ -125,3 +125,10 @@ aov_data <- gapdata %>%
 
 fit = aov(lifeExp ~ continent, data = aov_data) 
 summary(fit)
+
+aov_data %>% 
+    aov(lifeExp ~ continent, data = .) %>% 
+    tidy()
+
+library(ggfortify)
+autoplot(fit)
