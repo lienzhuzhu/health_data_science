@@ -132,3 +132,11 @@ aov_data %>%
 
 library(ggfortify)
 autoplot(fit)
+
+
+# 6.8 Multiple Testing
+pairwise.t.test(aov_data$lifeExp, aov_data$continent, 
+                p.adjust.method = "bonferroni")
+
+pairwise.t.test(aov_data$lifeExp, aov_data$continent, 
+                p.adjust.method = "fdr")
